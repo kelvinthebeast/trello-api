@@ -1,27 +1,45 @@
+/* eslint-disable no-console */
 
 import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
+import { CONNECT_DB, GET_DB } from '~/config/mongodb'
+
 
 const app = express()
 
 const hostname = 'localhost'
 const port = 8017
 
-app.get('/', (req, res) => {
-  // Test Absolute import mapOrder
-  console.log(mapOrder(
-    [{ id: 'id-1', name: 'One' },
-      { id: 'id-2', name: 'Two' },
-      { id: 'id-3', name: 'Three' },
-      { id: 'id-4', name: 'Four' },
-      { id: 'id-5', name: 'Five' } ],
-    ['id-5', 'id-4', 'id-2', 'id-3', 'id-1'],
-    'id'
-  ))
-  res.end('<h1>Hello World!</h1><hr>')
-})
+const START_SERVER = () => {
 
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello kelvin, I am running at ${ hostname }:${ port }/`)
-})
+  app.get('/', async (req, res) => {
+    console.log(await GET_DB().listCollections().toArray())
+    // Test Absolute import mapOrder
+    res.end('<h1>Hello World!</h1><hr>')
+  })
+
+  app.listen(port, hostname, () => {
+    // eslint-disable-next-line no-console
+    console.log(`Hello kelvin, I am running at ${ hostname }:${ port }`)
+  })
+
+}
+
+(async () => {
+  try {
+    console.log('1. Connecting to MongoDb CLoud Atlas')
+    await CONNECT_DB()
+    console.log('2. Successfully connected to MongoDb Cloud Atlas')
+    START_SERVER()
+  } catch (error) {
+    console.log(`Error connecting to mongodb cloud: ${error}`)
+    process.exit(0)
+  }
+})()
+// khi kết nối tới database thành công thì mới chạy START_SERVER backend lên
+// CONNECT_DB()
+//   .then(() => console.log('connected to mongodb cloud atlas'))
+//   .then(() => START_SERVER())
+//   .catch(error => {
+//     console.log(`Error connecting to mongodb cloud: ${error}`)
+//     process.exit(0)
+//   })
