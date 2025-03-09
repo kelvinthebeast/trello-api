@@ -3,12 +3,9 @@
 import express from 'express'
 import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 const exitHook = require('async-exit-hook')
-
+import { env } from '~/config/environment'
 const app = express()
 
-const hostname = 'localhost'
-const port = 8017
-const devName = 'kevinthebeast'
 const START_SERVER = () => {
 
   app.get('/', async (req, res) => {
@@ -17,12 +14,12 @@ const START_SERVER = () => {
     res.end('<h1>Hello World!</h1><hr>')
   })
 
-  app.listen(port, hostname, () => {
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
     // eslint-disable-next-line no-console
-    console.log(`3. Hello ${devName}, I am running at ${ hostname }:${ port }`)
+    console.log(`3. Hello ${env.AUTHOR}, I am running at ${ env.APP_HOST }:${ env.APP_PORT }`)
   })
   exitHook(() => {
-    console.log('4. Disconnecting mongoclient connection....')
+    console.log('4. Disconnecting mongoClient connection....')
     CLOSE_DB()
   })
 
