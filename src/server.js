@@ -5,8 +5,10 @@ import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 const exitHook = require('async-exit-hook')
 import { env } from '~/config/environment'
 const app = express()
-
+import { APIs_V1 } from '~/routes/v1'
 const START_SERVER = () => {
+
+  app.use('/v1', APIs_V1)
 
   app.get('/', async (req, res) => {
     console.log(await GET_DB().listCollections().toArray())
