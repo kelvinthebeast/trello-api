@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 
 import express from 'express'
-import { CONNECT_DB, GET_DB } from '~/config/mongodb'
-
+import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
+const exitHook = require('async-exit-hook')
 
 const app = express()
 
 const hostname = 'localhost'
 const port = 8017
-
+const devName = 'kevinthebeast'
 const START_SERVER = () => {
 
   app.get('/', async (req, res) => {
@@ -19,7 +19,11 @@ const START_SERVER = () => {
 
   app.listen(port, hostname, () => {
     // eslint-disable-next-line no-console
-    console.log(`Hello kelvin, I am running at ${ hostname }:${ port }`)
+    console.log(`3. Hello ${devName}, I am running at ${ hostname }:${ port }`)
+  })
+  exitHook(() => {
+    console.log('4. Disconnecting mongoclient connection....')
+    CLOSE_DB()
   })
 
 }
