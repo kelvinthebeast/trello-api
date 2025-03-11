@@ -6,11 +6,15 @@ const exitHook = require('async-exit-hook')
 import { env } from '~/config/environment'
 const app = express()
 import { APIs_V1 } from '~/routes/v1'
+import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
 const START_SERVER = () => {
   // enable json parsing
   app.use(express.json())
   // enable url encoded parsing
   app.use('/v1', APIs_V1)
+
+  // error handling
+  app.use(errorHandlingMiddleware)
 
   app.get('/', async (req, res) => {
     console.log(await GET_DB().listCollections().toArray())
