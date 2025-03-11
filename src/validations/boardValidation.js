@@ -13,9 +13,10 @@ const createNew = async (req, res, next) => {
     // set abortEarly: false để trả về tất cả lỗi
     await correctCondition.validateAsync(req.body, { abortEarly: false })
     res.status(StatusCodes.CREATED).json({ message: 'POST from validation: Board created successfully', code: StatusCodes.CREATED })
+    next() // xong xuôi thì cho đi tiếp
   } catch (error) {
     console.log(error)
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({ erros: new Error(error).message(
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({ errors: new Error(error).message(
       {
         'any.required': 'Title is required',
         'string.empty': 'Title is not allowed to be empty',
