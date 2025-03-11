@@ -17,7 +17,7 @@ const createNew = async (req, res, next) => {
   })
 
   try {
-    console.log('req body: ', req.body)
+    // console.log('req body: ', req.body)
     // set abortEarly: false để trả về tất cả lỗi
     await correctCondition.validateAsync(req.body, { abortEarly: false })
     res.status(StatusCodes.CREATED).json({ message: 'POST from validation: Board created successfully', code: StatusCodes.CREATED })
