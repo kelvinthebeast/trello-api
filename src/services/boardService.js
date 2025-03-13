@@ -1,5 +1,5 @@
 import { slugify } from '~/utils/formatters'
-
+import { boardModel } from '~/models/boardModel'
 
 //
 const createNew = async (reqBody) => {
