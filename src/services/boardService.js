@@ -16,14 +16,14 @@ const createNew = async (reqBody) => {
     // return createdBoard
 
     // lấy bản ghi board sau khi gọi và sử dụng tùy mục đích dự án
-    // const getNewBoard = boardModel.findOneById(createdBoard.insertedId)
-    // console.log(getNewBoard)
+    const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
+    console.log(getNewBoard)
 
     // Làm thêm các xử lý logic khác với các Collection khác tùy đặc thù dự án...vv
     // Bắn email, notification về cho admin khi có 1 cái board mới được tạo...vv
 
     // Trả kết quả về, trong Service luôn phải có return
-    return createdBoard
+    return getNewBoard
   } catch (error) { throw new Error(error) }
 }
 
