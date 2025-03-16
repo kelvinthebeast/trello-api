@@ -12,4 +12,8 @@ Router.route('/')
   // chỗ createNew không có () bới vì chúng sẽ gọi hàm qua api chứ không gọi trực tiếp như này
   .post( boardValidation.createNew, boardController.createNew)
   //
+
+Router.route('/:id')
+  .get(boardController.getDetails)
+  .put()
 export const boardRoute = Router

@@ -36,16 +36,29 @@ const findOneById = async (id) => {
   try {
     if (!ObjectId.isValid(id)) throw new Error('Invalid ID format')
 
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: id })
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
     return result
   } catch (error) {
     throw new Error(error.message)
   }
 }
 
+const getDetails = async (id) => {
+  try {
+    if (!ObjectId.isValid(id)) throw new Error('Invalid ID format')
+
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOne({ _id: new ObjectId(id) })
+    return result
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
+
+
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createNew,
-  findOneById
+  findOneById,
+  getDetails
 }
