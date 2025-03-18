@@ -5,9 +5,14 @@ import { CONNECT_DB, GET_DB, CLOSE_DB } from '~/config/mongodb'
 const exitHook = require('async-exit-hook')
 import { env } from '~/config/environment'
 const app = express()
+import { corsOptions } from '~/config/cors'
+import cors from 'cors'
 import { APIs_V1 } from '~/routes/v1'
 import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
 const START_SERVER = () => {
+
+  // handle CORS
+  app.use(cors(corsOptions))
   // enable json parsing
   app.use(express.json())
   // enable url encoded parsing
