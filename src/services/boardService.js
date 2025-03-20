@@ -2,7 +2,7 @@ import { slugify } from '~/utils/formatters'
 import { boardModel } from '~/models/boardModel'
 import ApiError from '~/utils/ApiError'
 import { StatusCodes } from 'http-status-codes'
-
+import { cloneDeep } from 'lodash'
 //
 const createNew = async (reqBody) => {
   try {
@@ -33,7 +33,22 @@ const getDetails = async (boardId) => {
   try {
     const board = await boardModel.getDetails(boardId)
     if (!board) { throw new ApiError(StatusCodes.NOT_FOUND, 'Board not found') }
-    return board
+    // tạo ra board mới để xử lý không ảnh hướng đến board ban đầu
+    const resBoard = cloneDeep(board)
+    // đưa card về đúng column
+
+    resBoard.columns.forEach((column) => {
+      // method equals() của mongoose so sánh ObjectId với nhau
+      column.cards = resBoard.cards.filter((card) => card.columnId.equals(column._id))
+
+      // cach 2 la su dung toString() de so sanh
+      // column.cards = resBoard.cards.filter((card) => card.columnId.toString() === column._id.toString())
+    })
+
+
+    // xóa cards vì không cần cards nào song song với columns trong mongoDb
+    delete resBoard.cards
+    return resBoard
   } catch (error) { throw new Error(error) }
 }
 
